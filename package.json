@@ -1,0 +1,55 @@
+{
+  "name": "generator-angular-ts",
+  "version": "1.0.0",
+  "description": "Yeoman Generator for Angular 1.5 and Typescript",
+  "homepage": "",
+  "author": {
+    "name": "Kujtim Hoxha",
+    "email": "kujtimii.h@gmail.com",
+    "url": "kujtimhoxha.com"
+  },
+  "files": [
+    "generators"
+  ],
+  "main": "generators\\index.js",
+  "keywords": [
+    "angular",
+    "generator",
+    "typescript",
+    "yeoman-generator"
+  ],
+  "dependencies": {
+    "chalk": "^1.0.0",
+    "enfsfind": "^0.1.0",
+    "lodash": "^4.11.1",
+    "node-find-folder": "^0.1.25",
+    "yeoman-generator": "^0.22.0",
+    "yosay": "^1.0.2"
+  },
+  "devDependencies": {
+    "yeoman-test": "^1.0.0",
+    "yeoman-assert": "^2.0.0",
+    "eslint": "^2.1.0",
+    "eslint-config-xo-space": "^0.10.0",
+    "gulp": "^3.9.0",
+    "gulp-eslint": "^2.0.0",
+    "gulp-exclude-gitignore": "^1.0.0",
+    "gulp-line-ending-corrector": "^1.0.1",
+    "gulp-istanbul": "^0.10.3",
+    "gulp-mocha": "^2.0.0",
+    "gulp-plumber": "^1.0.0",
+    "gulp-nsp": "^2.1.0"
+  },
+  "eslintConfig": {
+    "extends": "xo-space",
+    "env": {
+      "mocha": true
+    }
+  },
+  "repository": "kujtimiihoxha/generator-angular-ts",
+  "scripts": {
+    "prepublish": "gulp prepublish",
+    "test": "gulp"
+  },
+  "license": "MIT"
+}
