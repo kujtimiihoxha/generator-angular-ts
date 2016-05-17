@@ -61,6 +61,7 @@ module.exports = yeoman.Base.extend({
         done();
         return;
     }
+    
     if(bindings!=null){
       bind=true;
       bindings.forEach(function (bind) {
