@@ -5,13 +5,14 @@ var yosay = require('yosay');
 var _ = require('lodash');
 var fs = require('fs');
 var ff = require('node-find-folder');
+var folders = [];
 module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
     // This makes `appname` a required argument.
-    this.option('no-test');
+    this.option('noTest');
     this.option('abstract');
-    this.option('force-parent');
+    this.option('forceParent');
     // And you can then access it later on this way; e.g. CamelCased
   },
   writing: function () {
@@ -30,7 +31,6 @@ module.exports = yeoman.Base.extend({
     var dir = null;
     var templateUrl = '';
     var module = '';
-    var destinationPath;
     var url = null;
     var routeName = null;
     var component = null;
@@ -65,13 +65,13 @@ module.exports = yeoman.Base.extend({
       return;
     }
     if(parent != null) {
-      var result = new ff(parent);
+      parent= parent.replace(new RegExp('\\\\', 'g'), '/');
+      parent=_.trim(parent,'/');
+      var result = getDirectories(config.src.paths.base+config.src.paths.app+config.src.paths.routes);
       result.forEach(function (folder) {
-        if(_.startsWith(folder,config.src.paths.base)){
           if(folder === (config.src.paths.base+config.src.paths.app+config.src.paths.routes+"/"+parent)){
             dir = folder;
           }
-        }
       });
       if(dir ==null){
         if(!this.options.forceParent) {
@@ -87,7 +87,7 @@ module.exports = yeoman.Base.extend({
       }
       var parents = parent.split('/');
       if(parent.split('/').length === 0){
-        var parents =[parent];
+         parents =[parent];
       }
       var parentsCamel=[];
       routeName='';
@@ -201,3 +201,15 @@ module.exports = yeoman.Base.extend({
     }
   }
 });
+
+function getDirectories(srcpath) {
+  var items =fs.readdirSync(srcpath).filter(function(file) {
+    return fs.statSync('./'+srcpath+'/'+ file).isDirectory();
+  });
+  for (var i=0; i<items.length; i++) {
+    var file = srcpath + '/' + items[i];
+    folders.push(file);
+    getDirectories(file);
+  }
+  return folders;
+}

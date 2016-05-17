@@ -5,6 +5,7 @@ var yosay = require('yosay');
 var _ = require('lodash');
 var fs = require('fs');
 var ff = require('node-find-folder');
+var folders=[];
 module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
@@ -14,17 +15,6 @@ module.exports = yeoman.Base.extend({
     // And you can then access it later on this way; e.g. CamelCased
   },
   writing: function () {
-    /**
-     * Config
-     */
-    var  config = null;
-    if (fs.existsSync('ng-ts.json')) {
-      config = JSON.parse(fs.readFileSync('ng-ts.json', 'utf-8'));
-    } else {
-      this.log.error("Error: ng-ts.json not found in directory");
-      done();
-      return;
-    }
     var dir = null;
     var module='';
     var bindingsValue='';
@@ -37,6 +27,18 @@ module.exports = yeoman.Base.extend({
     var inject = null;
     var templateUrl = '';
     var destinationPath;
+    /**
+     * Config
+     */
+    var  config = null;
+    if (fs.existsSync('ng-ts.json')) {
+      config = JSON.parse(fs.readFileSync('ng-ts.json', 'utf-8'));
+    } else {
+      this.log.error("Error: ng-ts.json not found in directory");
+      done();
+      return;
+    }
+
     var moduleCamel=_.upperFirst(_.camelCase(config.moduleName));
     this.arguments.forEach(function (argument) {
       if (argument.includes('selector')) {
@@ -61,7 +63,6 @@ module.exports = yeoman.Base.extend({
         done();
         return;
     }
-    
     if(bindings!=null){
       bind=true;
       bindings.forEach(function (bind) {
@@ -71,16 +72,16 @@ module.exports = yeoman.Base.extend({
       bindingsValue = bindingsValue.substring(0,bindingsValue.length -',//object input\n'.length)+"//object input";
     }
     if(parent != null) {
-       var result = new ff(parent);
-      result.forEach(function (folder) {
+      parent= parent.replace(new RegExp('\\\\', 'g'), '/');
+      parent=_.trim(parent,'/');
 
-        if(_.startsWith(folder,config.src.paths.base)){
+      var result = getDirectories(config.src.paths.base+config.src.paths.app+config.src.paths.components);
+      result.forEach(function (folder) {
           if(folder === (config.src.paths.base+config.src.paths.app+config.src.paths.components+"/"+parent)){
             dir = folder;
           }
-        }
       });
-      if(dir ==null && !this.options.forceParent ){
+      if(dir == null){
         if (!this.options.forceParent) {
           this.log.error("No component with this name could be found");
           done();
@@ -102,10 +103,12 @@ module.exports = yeoman.Base.extend({
       })
     }
     if(dir != null){
-      templateUrl = config.templates.options.prefix+dir.replace(config.src.paths.base+config.src.paths.app +'/','')+'/'+selector;
+
+      templateUrl = config.src.templates.options.prefix+dir.replace(config.src.paths.base+config.src.paths.app +'/','')+'/'+selector;
       destinationPath = dir+'/'+selector
+
     } else {
-      templateUrl = config.templates.options.prefix+_.trim(config.src.paths.components,'/')+'/'+selector;
+      templateUrl = config.src.templates.options.prefix+_.trim(config.src.paths.components,'/')+'/'+selector;
       destinationPath = config.src.paths.base+config.src.paths.app+config.src.paths.components+'/'+selector
     }
     if(inject != null){
@@ -187,4 +190,14 @@ module.exports = yeoman.Base.extend({
     }
   }
 });
-
+function getDirectories(srcpath) {
+  var items =fs.readdirSync(srcpath).filter(function(file) {
+    return fs.statSync('./'+srcpath+'/'+ file).isDirectory();
+  });
+  for (var i=0; i<items.length; i++) {
+    var file = srcpath + '/' + items[i];
+    folders.push(file);
+    getDirectories(file);
+  }
+  return folders;
+}

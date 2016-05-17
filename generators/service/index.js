@@ -6,12 +6,13 @@ var _ = require('lodash');
 var fs = require('fs');
 var enfsfind = require('enfsfind');
 var ff = require('node-find-folder');
+var folders = [];
 module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
     // This makes `appname` a required argument.
-    this.option('no-test');
-    this.option('force-parent');
+    this.option('noTest');
+    this.option('forceParent');
     // And you can then access it later on this way; e.g. CamelCased
   },
   writing: function () {
@@ -45,19 +46,21 @@ module.exports = yeoman.Base.extend({
         parent = argument.split('=')[1];
       }
     });
-
+    if (name == null) {
+      this.log.error("You must specify a name for the service");
+      done();
+      return;
+    }
     if (parent != null) {
-      var result = new ff(parent, {nottraversal: ['**/*']});
-      // console.log(result);
-
+      parent= parent.replace(new RegExp('\\\\', 'g'), '/');
+      parent=_.trim(parent,'/');
+      var result = getDirectories(config.src.paths.base+config.src.paths.app+config.src.paths.components);
       result.forEach(function (folder) {
-        if (_.startsWith(folder, config.src.paths.base)) {
           if (folder === (config.src.paths.base + config.src.paths.app + config.src.paths.services + "/" + parent)) {
             dir = folder;
           }
-        }
       });
-      if (dir == null && !this.options.forceParent) {
+      if (dir == null) {
         if (!this.options.forceParent) {
           this.log.error("No parent folder with this name could be found");
           done();
@@ -69,7 +72,6 @@ module.exports = yeoman.Base.extend({
           dir = config.src.paths.base + config.src.paths.app + config.src.paths.services + "/" + parent;
         }
       }
-
       var parents = parent.split('/');
       if (parent.split('/').length === 0) {
         parents = [parent];
@@ -137,3 +139,15 @@ module.exports = yeoman.Base.extend({
 
   }
 });
+
+function getDirectories(srcpath) {
+  var items = fs.readdirSync(srcpath).filter(function (file) {
+    return fs.statSync('./' + srcpath + '/' + file).isDirectory();
+  });
+  for (var i = 0; i < items.length; i++) {
+    var file = srcpath + '/' + items[i];
+    folders.push(file);
+    getDirectories(file);
+  }
+  return folders;
+}
