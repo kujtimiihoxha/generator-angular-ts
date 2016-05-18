@@ -103,6 +103,7 @@ module.exports = yeoman.Base.extend({
       })
     }
     if(dir != null){
+      console.log(config.src);
 
       templateUrl = config.src.templates.options.prefix+dir.replace(config.src.paths.base+config.src.paths.app +'/','')+'/'+selector;
       destinationPath = dir+'/'+selector
