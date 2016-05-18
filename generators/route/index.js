@@ -103,13 +103,13 @@ module.exports = yeoman.Base.extend({
     }
 
     if(dir != null){
-      templateUrl = config.templates.options.prefix+dir.replace(config.src.paths.base+config.src.paths.app +'/','')+'/'+_.kebabCase(name)+"/"+_.kebabCase(name)+".template.html";
+      templateUrl = config.src.templates.options.prefix+dir.replace(config.src.paths.base+config.src.paths.app +'/','')+'/'+_.kebabCase(name)+"/"+_.kebabCase(name)+".template.html";
       destinationPath = dir+'/'+_.kebabCase(name)
     } else {
-      templateUrl = config.templates.options.prefix+_.trim(config.src.paths.routes,'/')+'/'+_.kebabCase(name)+"/"+_.kebabCase(name)+".template.html";
+      templateUrl = config.src.templates.options.prefix+_.trim(config.src.paths.routes,'/')+'/'+_.kebabCase(name)+"/"+_.kebabCase(name)+".template.html";
+      console.log("Test");
       destinationPath = config.src.paths.base+config.src.paths.app+config.src.paths.routes+'/'+_.kebabCase(name)
     }
-
     if(inject != null){
       var injectName='';
       var injectConstructor='';
@@ -172,7 +172,6 @@ module.exports = yeoman.Base.extend({
           }
         );
       } else {
-        console.log("ktu");
         this.fs.copyTpl(
           this.templatePath('route.ts.tpl'),
           this.destinationPath(destinationPath+"/"+_.kebabCase(name)+".route.ts"),{
