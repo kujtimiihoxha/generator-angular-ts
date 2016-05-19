@@ -1,13 +1,13 @@
 module <%= moduleCamel %>.Routes<%= module%> {
     @Route("<%= routeName %>",{<% if (abstract) {%>
-        abstract: true,<% }%> <% if (routeUrl) {%>
-        url:"<%= routeUrl %>",<% } %> <% if (component) { %>
-        template:"<<%= component %>></<%= component %>>"<% } %> <% if (!component) { %>
+        abstract: true,<% }%> <% if (routeUrl!==null) {%>
+        url:"<%= routeUrl %>",<% } %> <% if (component!==null) { %>
+        template:"<<%= component %>></<%= component %>>"<% } %> <% if (component===null) { %>
         templateUrl:"<%= templateUrl %>"<% } %>
     })
-    <% if (injectName) { %>@Inject(<%- injectName %>)
+    <% if (injectName!==null) { %>@Inject(<%- injectName %>)
     <% } %>class <%= name %>Route{
-        constructor(<% if (injectConstructor) { %><%= injectConstructor %><% } %>){
+        constructor(<% if (injectConstructor!==null) { %><%= injectConstructor %><% } %>){
         }
     }
 }

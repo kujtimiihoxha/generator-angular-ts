@@ -2,10 +2,10 @@ module <%= moduleCamel %>.Directives{
     @Directive("<%= selector %>",{
         restrict: 'A'
     })
-    <% if (injectName) { %>@Inject(<%- injectName %>)
+    <% if (injectName!==null) { %>@Inject(<%- injectName %>)
     <% } %>class <%= selectorCamel %>Directive{
         value="<%= selector %>";
-        constructor(<% if (injectName) { %><%= injectConstructor %><% } %>){
+        constructor(<% if (injectName!==null) { %><%= injectConstructor %><% } %>){
             console.log("<%= selector %> directives");
         }<% if (compile) { %>
 

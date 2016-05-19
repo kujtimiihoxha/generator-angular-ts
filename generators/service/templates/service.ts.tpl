@@ -1,8 +1,8 @@
 module <%= moduleCamel %>.Services<%= module %> {
     @Service("<%= serviceName %>Service")
-    <% if (injectName) { %>@Inject(<%- injectName %>)
+    <% if (injectName!==null) { %>@Inject(<%- injectName %>)
     <% } %>class <%= serviceName %>Service{
-        constructor(<% if (injectName) { %><%= injectConstructor %><% } %>){
+        constructor(<% if (injectName!=null) { %><%= injectConstructor %><% } %>){
             console.log("<%= serviceName %> service");
         }
     }

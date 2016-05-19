@@ -4,9 +4,7 @@ var chalk = require('chalk');
 var yosay = require('yosay');
 var _ = require('lodash');
 var fs = require('fs');
-var enfsfind = require('enfsfind');
-var ff = require('node-find-folder');
-var folders = [];
+var serviceUtil = require('./service-util');
 module.exports = yeoman.Base.extend({
   constructor: function () {
     yeoman.Base.apply(this, arguments);
@@ -27,100 +25,72 @@ module.exports = yeoman.Base.extend({
       done();
       return;
     }
-    var inject = null;
-    var parent = null;
-    var module = '';
-    var dir = null;
-    var name = null;
-    var destinationPath;
-    var moduleCamel = _.upperFirst(_.camelCase(config.moduleName));
-    this.arguments.forEach(function (argument) {
-      if (argument.includes('inject')) {
-        inject = argument.split('=')[1].split(',');
-        if (argument.split('=')[1].split(',').length == 0) {
-          inject = [argument];
-        }
-      } else if (argument.includes('name')) {
-        name = _.upperFirst(_.camelCase(argument.split('=')[1]));
-      } else if (argument.includes('parent')) {
-        parent = argument.split('=')[1];
-      }
-    });
+    /*--Options--*/
+
+    /**
+     * The route name
+     */
+    var name;
+    /**
+     * Dependencies
+     */
+    var inject;
+    /**
+     * The parent directory
+     */
+    var parent;
+
+    /*-----------*/
+
+    var options = serviceUtil.getOptions(this.arguments);
+    name = options.name;
+    inject = options.inject;
+    parent = options.parent;
+
     if (name == null) {
       this.log.error("You must specify a name for the service");
       done();
       return;
     }
-    if (parent != null) {
-      parent= parent.replace(new RegExp('\\\\', 'g'), '/');
-      parent=_.trim(parent,'/');
-      var result = getDirectories(config.src.paths.base+config.src.paths.app+config.src.paths.components);
-      result.forEach(function (folder) {
-          if (folder === (config.src.paths.base + config.src.paths.app + config.src.paths.services + "/" + parent)) {
-            dir = folder;
-          }
-      });
-      if (dir == null) {
-        if (!this.options.forceParent) {
-          this.log.error("No parent folder with this name could be found");
-          done();
-          return;
-        }
-        else if (this.options.forceParent) {
-          parent = _.trimStart(parent, '/');
-          parent = _.trimEnd(parent, '/');
-          dir = config.src.paths.base + config.src.paths.app + config.src.paths.services + "/" + parent;
-        }
+    /**
+     * If the option parent is not null determine the parent path.
+     * @type {string}
+     */
+    var parentDirectory;
+    /**
+     * The module name
+     * @type {string}
+     */
+    var module;
+    /**
+     * The destination path
+     */
+    var destinationPath;
+
+    var that= this;
+    parentDirectory = serviceUtil.getParentDirectory(parent,config,this.options.forceParent,function () {
+      that.log.error("No parent route with this name could be found");
+      done();
+    });
+
+    module= serviceUtil.getModule(parent).module;
+    destinationPath = serviceUtil.getDestinationPath(parentDirectory,name,config);
+    var injects = serviceUtil.getInjection(inject);
+
+    this.fs.copyTpl(
+      this.templatePath('service.ts.tpl'),
+      this.destinationPath(destinationPath + "/" + _.kebabCase(name) + ".service.ts"), {
+        moduleCamel: _.upperFirst(_.camelCase(config.moduleName)),
+        module: module,
+        serviceName: name,
+        injectName: injects.injectName,
+        injectConstructor: injects.injectConstructor
       }
-      var parents = parent.split('/');
-      if (parent.split('/').length === 0) {
-        parents = [parent];
-      }
-      parents.forEach(function (prnt) {
-        module = module + '.' + _.upperFirst(_.camelCase(prnt));
-      });
-    }
-    if (dir != null) {
-      destinationPath = dir
-    } else {
-      destinationPath = config.src.paths.base + config.src.paths.app + config.src.paths.services
-    }
-    if (inject != null) {
-      var injectName = '';
-      var injectConstructor = '';
-      inject.forEach(function (dep) {
-        injectName = injectName + "," + '"' + dep + '"';
-        injectConstructor = injectConstructor + ",private " + _.camelCase(dep) + ": any";
-      });
-      injectName = _.trim(injectName, ',');
-      injectConstructor = _.trim(injectConstructor, ',');
-      this.fs.copyTpl(
-        this.templatePath('service.ts.tpl'),
-        this.destinationPath(destinationPath + "/" + _.kebabCase(name) + ".service.ts"), {
-          moduleCamel: moduleCamel,
-          module: module,
-          serviceName: name,
-          injectName: injectName,
-          injectConstructor: injectConstructor
-        }
-      );
-    }
-    else {
-      this.fs.copyTpl(
-        this.templatePath('service.ts.tpl'),
-        this.destinationPath(destinationPath + "/" + _.kebabCase(name) + ".service.ts"), {
-          moduleCamel: moduleCamel,
-          module: module,
-          serviceName: name,
-          injectName: false,
-          injectConstructor: false
-        }
-      );
-    }
+    );
     if (!this.options.noTest) {
       var testDir;
-      if (dir != null) {
-        testDir = dir.replace(
+      if (parentDirectory != null) {
+        testDir = parentDirectory.replace(
           config.src.paths.base + config.src.paths.app + config.src.paths.services,
           config.tests.paths.base + config.tests.paths.services)
       } else {
@@ -130,9 +100,9 @@ module.exports = yeoman.Base.extend({
         this.templatePath('service.spec.ts.tpl'),
         this.destinationPath(testDir + "/" + _.kebabCase(name) + ".spec.ts"), {
           moduleName: config.moduleName,
-          moduleCamel: moduleCamel,
+          moduleCamel: _.upperFirst(_.camelCase(config.moduleName)),
           module: module,
-          serviceName: name,
+          serviceName: name
         }
       );
     }

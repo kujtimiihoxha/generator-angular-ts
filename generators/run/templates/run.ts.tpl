@@ -1,8 +1,8 @@
 module <%= moduleCamel %>.Runs{
     @Run()
-    <% if (injectName) { %>@Inject(<%- injectName %>)
+    <% if (injectName!==null) { %>@Inject(<%- injectName %>)
     <% } %>class <%= runName %>Run{
-        constructor(<% if (injectName) { %><%= injectConstructor %><% } %>){
+        constructor(<% if (injectName!==null) { %><%= injectConstructor %><% } %>){
             console.log("<%= runName %> run");
         }
     }
