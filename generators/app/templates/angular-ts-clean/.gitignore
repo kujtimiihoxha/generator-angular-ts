@@ -1,0 +1,7 @@
+/typings
+/node_modules
+.env
+.idea/
+/bower_components
+npm-debug.log
+/dist

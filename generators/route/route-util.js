@@ -35,18 +35,28 @@ module.exports = {
 
     arguments.forEach(function (argument) {
       if (argument.includes('name')) {
-        name = argument.split('=')[1];
+        if(argument.split('=').length === 2 && argument.split('=')[1]!=='') {
+          name = argument.split('=')[1];
+        }
       } else if (argument.includes('inject')) {
-        inject = argument.split('=')[1].split(',');
-        if (argument.split('=')[1].split(',').length == 0) {
-          inject = [argument];
+        if(argument.split('=').length === 2 && argument.split('=')[1]!=='') {
+          inject = argument.split('=')[1].split(',');
+          if (argument.split('=')[1].split(',').length == 0) {
+            inject = [argument];
+          }
         }
       } else if (argument.includes('parent')) {
-        parent = argument.split('=')[1];
+        if(argument.split('=').length === 2 && argument.split('=')[1]!=='') {
+          parent = argument.split('=')[1];
+        }
       } else if (argument.includes('url')) {
-        url = argument.split('=')[1];
+        if(argument.split('=').length === 2 && argument.split('=')[1]!=='') {
+          url = argument.split('=')[1];
+        }
       } else if (argument.includes('component')) {
-        component = argument.split('=')[1];
+        if(argument.split('=').length === 2 && argument.split('=')[1]!=='') {
+          component = argument.split('=')[1];
+        }
       }
     });
     return {

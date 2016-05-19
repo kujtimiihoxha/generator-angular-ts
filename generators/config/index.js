@@ -36,14 +36,14 @@ module.exports = yeoman.Base.extend({
     var options = configUtil.getOptions(this.arguments);
     name = options.name;
     inject = options.inject;
-    
+
     if (name == null) {
       this.log.error("You must specify a name for the config");
       done();
       return;
     }
-    
- 
+
+
     var destinationPath = configUtil.getDestinationPath(config);
 
     var injects = configUtil.getInjection(inject);

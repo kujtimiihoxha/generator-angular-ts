@@ -32,7 +32,7 @@ module.exports = yeoman.Base.extend({
 
     var options = constantUtil.getOptions(this.arguments);
     name = options.name;
-    if (name == null) {
+    if (name == null || name === '') {
       this.log.error("You must specify a name for the constant file");
       done();
       return;

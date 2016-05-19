@@ -45,7 +45,7 @@ module.exports = yeoman.Base.extend({
     name = options.name;
     param = options.param;
 
-    if (name == null) {
+    if (name === null || name === '') {
       this.log.error("You must specify a name for the config file");
       done();
       return;

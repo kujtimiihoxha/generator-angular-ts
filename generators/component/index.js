@@ -57,7 +57,7 @@ module.exports = yeoman.Base.extend({
      * @type {string|null}
      */
     var parent;
-    
+
     /*-----------*/
 
     var options = componentUtil.getOptions(this.arguments);
@@ -94,7 +94,6 @@ module.exports = yeoman.Base.extend({
      * The destination path
      */
     var destinationPath;
-
     if (selector === null) {
       this.log.error("You must specify a selector");
       done();

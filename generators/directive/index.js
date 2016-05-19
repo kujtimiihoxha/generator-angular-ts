@@ -53,7 +53,7 @@ module.exports = yeoman.Base.extend({
     var options = directiveUtil.getOptions(this.arguments);
     selector = options.selector;
     inject = options.inject;
-    if (selector == null) {
+    if (selector == null || selector === '') {
       this.log.error("You must specify a selector");
       done();
       return;
