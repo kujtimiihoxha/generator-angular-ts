@@ -34,6 +34,6 @@ MIT © [Kujtim Hoxha](kujtimhoxha.com)
 
 
 [npm-image]: https://badge.fury.io/js/generator-angular-ts.svg
-[npm-url]: https://npmjs.org/package/generator-angular-ts
+[npm-url]: https://www.npmjs.com/package/generator-angular-ts
 [daviddm-image]: https://david-dm.org/kujtimiihoxha/generator-angular-ts.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/kujtimiihoxha/generator-angular-ts
