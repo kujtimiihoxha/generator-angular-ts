@@ -1,5 +1,6 @@
 # generator-angular-ts [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Yeoman Generator for Angular 1.5 and Typescript
+
 ### See full documentation [Angular-Ts](http://angular-ts.kujtimhoxha.com)
 
 ## Installation
