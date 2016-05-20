@@ -1,12 +1,15 @@
 {
   "name": "generator-angular-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Yeoman Generator for Angular 1.5 and Typescript",
-  "homepage": "",
+  "homepage": "http://angular-ts.kujtimhoxha.com/",
   "author": {
     "name": "Kujtim Hoxha",
     "email": "kujtimii.h@gmail.com",
     "url": "kujtimhoxha.com"
+  },
+  "bugs":{
+    "url" : "https://github.com/kujtimiihoxha/generator-angular-ts/issues"
   },
   "files": [
     "generators"
@@ -17,6 +20,9 @@
     "generator",
     "typescript",
     "yeoman-generator"
+  ],
+  "contributors": [
+    "Kujtim Hoxha kujtimiihoxha"
   ],
   "dependencies": {
     "chalk": "^1.0.0",
@@ -46,7 +52,11 @@
       "mocha": true
     }
   },
-  "repository": "kujtimiihoxha/generator-angular-ts",
+
+  "repository":{
+    "type": "git",
+    "url": "https://github.com/kujtimiihoxha/generator-angular-ts.git"
+  },
   "scripts": {
     "prepublish": "gulp prepublish",
     "test": "gulp"
