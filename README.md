@@ -1,5 +1,6 @@
 # generator-angular-ts [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Yeoman Generator for Angular 1.5 and Typescript
+### See full documentation [Angular-Ts](http://angular-ts.kujtimhoxha.com)
 
 ## Installation
 
@@ -10,18 +11,18 @@ npm install -g yo
 npm install -g generator-angular-ts
 ```
 
+
+Create your app folder 
+```bash
+mkdir my-app && cd my-app
+```
+
 Then generate your new project:
 
 ```bash
 yo angular-ts
 ```
 
-## Getting To Know Yeoman
-
- * Yeoman has a heart of gold.
- * Yeoman is a person with feelings and opinions, but is very easy to work with.
- * Yeoman can be too opinionated at times but is easily convinced not to be.
- * Feel free to [learn more about Yeoman](http://yeoman.io/).
 
 ## License
 
