@@ -1,0 +1,50 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>@Directive()</h1>
+<p>
+    The <code>@Directive</code> decorator is used to register an angular directive, by default the class under the decorator
+    will be registered as the controller of the directive and controllerAs will be 'vm'.</p>
+<pre  class="language-typescript" prism source="@Directive('your-selector'{
+        compile?: IDirectiveCompileFn;
+
+        controller?: any;
+
+        controllerAs?: string;
+
+        bindToController?: boolean | Object;
+
+        link?: IDirectiveLinkFn | IDirectivePrePost;
+
+        multiElement?: boolean;
+
+        name?: string;
+
+        priority?: number;
+
+        /**
+        * @deprecated
+        */
+        replace?: boolean;
+
+        require?: string | string[] | {[controller: string]: string};
+
+        restrict?: string;
+
+        scope?: boolean | Object;
+
+        template?: string | Function;
+
+        templateNamespace?: string;
+
+        templateUrl?: string | Function;
+
+        terminal?: boolean;
+
+        transclude?: boolean | string | {[slot: string]: string};
+})"></pre>
+<p>To create a directive use <a ui-sref="generators.directive"><code>yo angular-ts:directive</code></a> generator. For more details on directives
+    go to the  <a href="https://docs.angularjs.org/guide/directive" target="_blank">angularjs directive documentation</a>
+</p>

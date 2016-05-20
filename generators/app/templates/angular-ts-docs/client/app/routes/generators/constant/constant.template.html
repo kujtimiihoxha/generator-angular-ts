@@ -1,0 +1,28 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Constant Generator</h1>
+<p>The constant generator is used to create angular constants.</p>
+<p>To create a constant execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:constant name=baz"></pre>
+<p>After the generator finishes one file will be created.</p>
+<ul>
+    <li><b>baz.constant.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Constants{
+    @Constant('BazConstant')
+    class BazConstant{
+        variable = 'MyVariable'
+        constructor(){ }
+    }
+}
+"></pre>
+</ul>
+<p>The config file will be created in the constants folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- constants/
+|   |   |   |   |-- baz.constant.ts
+"></pre>

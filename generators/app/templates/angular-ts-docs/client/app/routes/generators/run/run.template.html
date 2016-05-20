@@ -1,0 +1,50 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Run Generator</h1>
+<p>The run generator is used to create angular run functions.</p>
+<p>To create a run function execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:run name=foo [options]"></pre>
+<h2>Options</h2>
+<ul>
+    <li><a scroll-to-id="inject"><code>inject</code></a> : dependencies to inject in the config</li>
+</ul>
+<h2>Create a run</h2>
+<p>To create a run ex. foo run execute</p>
+<pre class="language-bash" prism source="yo angular-ts:run name=foo"></pre>
+<p>After the generator finishes one file will be created.</p>
+<ul>
+    <li><b>foo.run.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Runs{
+    @Run()
+    class FooRun{
+        constructor(){
+            console.log('Foo run');
+        }
+    }
+}
+"></pre>
+</ul>
+<p>The run file will be created in the run folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- run/
+|   |   |   |   |-- foo.run.ts
+"></pre>
+<h2 id="inject">Inject</h2>
+<p>The inject option will tell the generator to inject dependencies.</p>
+<pre class="language-bash" prism source="yo angular-ts:run name=foo inject=$state"></pre>
+<p>Now <code>$state</code> will be injected in the run.</p>
+<pre class="language-typescript" prism source="module App.Runs{
+    @Run()
+    @Inject('$state')
+    class FooRun{
+        constructor(private state: any){
+            console.log('Foo run');
+        }
+    }
+}
+"></pre>

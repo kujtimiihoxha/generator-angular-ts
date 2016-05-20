@@ -1,0 +1,275 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Features</h1>
+<p>
+    Angular-Ts packs a lot of features that will make the development of angular apps very easy. It has a single configuration file
+that allows u to configure most of the features that angular-ts has to offer.
+    <ul>
+        <li><a scroll-to-id="generators_section">A lot of Generators</a></li>
+        <li><a scroll-to-id="typescript_section">Pre configured Typescript compilation</a></li>
+        <li><a scroll-to-id="custom_decorators_section">Custom Decorators</a></li>
+        <li><a scroll-to-id="sass_section">Pre configured SASS compilation</a></li>
+        <li><a scroll-to-id="template_cache_section">Template Caching integration</a></li>
+        <li><a scroll-to-id="configuration_section">Easy configuration ng-ts.json</a></li>
+        <li><a scroll-to-id="bower_dependencies">Automatically import bower dependencies</a></li>
+        <li><a scroll-to-id="tests">Karma,Jasmine tests</a></li>
+        <li>Gulp Tasks && Gulp Watch</li>
+        <li>Minification & Concatenation</li>
+    </ul>
+</p>
+<h2 id="generators_section">Generators</h2>
+<p>
+    Angular-ts has its own yeoman generator that implements a number of generators that are very useful
+    to add functionality to your angular app and allow
+    you to save time by eliminating the need for you to write ` boilerplate code`.
+</p>
+<p>
+    Angular-ts features these generators:
+    <ul>
+        <li><a ui-sref="generators.component">Component generator</a> <code class="language-bash">yo angular-ts:component</code></li>
+        <li><a ui-sref="generators.config">Config generator</a> <code class="language-bash">yo angular-ts:config</code></li>
+        <li><a ui-sref="generators.constant">Constant generator</a> <code class="language-bash">yo angular-ts:constant</code></li>
+        <li><a ui-sref="generators.directive">Directive generator</a> <code class="language-bash">yo angular-ts:directive</code></li>
+        <li><a ui-sref="generators.filter">Filter generator</a> <code class="language-bash">yo angular-ts:filter</code></li>
+        <li><a ui-sref="generators.route">Route generator</a> <code class="language-bash">yo angular-ts:route</code></li>
+        <li><a ui-sref="generators.run">Run generator</a> <code class="language-bash">yo angular-ts:run</code></li>
+        <li><a ui-sref="generators.service">Service generator</a> <code class="language-bash">yo angular-ts:run</code></li>
+    </ul>
+
+</p>
+<h2 id="typescript_section">Typescript</h2>
+<p>
+    Angular-ts has pre-configured typescript compilation using gulp tasks.
+    You can find the task that will compile the typescript in the file.
+    <pre><code class="language-bash"> gulp/tasks/ts.task.js</code></pre>
+    <h3>Typescript Task</h3>
+    <pre  class="language-javascript" prism source="/**
+ * Task:ts
+ */
+gulp.task('ts', function() {
+    return gulp.src([config.src.paths.typings,config.src.main,config.src.decorators,config.patters.ts])
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(sourcemaps.init())
+        .pipe(ts({
+            'noImplicitAny': true,
+            'suppressImplicitAnyIndexErrors': true,
+            'experimentalDecorators': true
+        }))
+        .pipe(uglify())
+        .pipe(concat(config.dist.js))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.dist.paths.base+config.dist.paths.js))
+        .pipe(browserSync.reload({stream: true}));
+});"></pre>
+</p>
+<h2 id="custom_decorators_section">Custom Decorators</h2>
+<p>
+    Angular-ts implements custom decorators that make angular 1 look very similar to angular 2 and make it very easy to
+    register components,config functions, run functions, services etc.
+    <h3>Decorators</h3>
+    <ul>
+        <li>
+            <a ui-sref="decorators.component">@Component()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.config">@Config()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.constant">@Constant()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.directive">@Directove()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.filter">@Filter()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.route">@Route()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.run">@Run()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.service">@Service()</a>
+        </li>
+        <li>
+            <a ui-sref="decorators.inject">@Inject()</a>
+        </li>
+    </ul>
+</p>
+<h2 id="sass_section">Sass</h2>
+<p>
+    Angular-ts has pre configured Sass compilation. you can find the task that compiles sass in the file.
+    <pre><code class="language-bash"> gulp/tasks/scss.task.js</code></pre>
+    <h3>Sass Task</h3>
+    <pre prism source="/**
+ * Task:sass
+ */
+gulp.task('sass', function() {
+    return gulp.src([config.patters.sass])
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(postcss([ autoprefixer({ browsers: ['last 2 versions'] }) ]))
+        .pipe(concat(config.dist.css))
+        .pipe(gulp.dest(config.dist.paths.base+config.dist.paths.css))
+        .pipe(cssnano())
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.dist.paths.base+config.dist.paths.css))
+        .pipe(browserSync.reload({stream: true}));
+});"  class="language-javascript"></pre>
+</p>
+<h2 id="template_cache_section">Template cache</h2>
+<p>
+    Angular-ts uses template caching for the components and route html templates, all the templates will be stored under:
+    <pre><code class="language-bash"> dist/js/tpl.min.js</code></pre>.
+    You can find the task that caches your templates in the file.
+    <pre><code class="language-bash"> gulp/tasks/tpl.task.js</code></pre>.
+    <h3>Template Task</h3>
+    <pre class="language-javascript" prism source="/**
+ * Task:tpl
+ */
+gulp.task('tpl', function() {
+    return gulp.src([config.patters.templates])
+        .pipe(sourcemaps.init())
+        .pipe(plumber({
+            errorHandler: onError
+        }))
+        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(ngHtml2Js(config.templates.options))
+        .pipe(uglify())
+        .pipe(concat(config.dist.templates))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(config.dist.paths.base+config.dist.paths.js))
+        .pipe(browserSync.reload({stream: true}));
+});"></pre>
+</p>
+<h2 id="configuration_section">Configure ng-ts.json</h2>
+<p>
+    Angular-ts uses a single json file for configurations, this file will be automatically created when you use
+    <code>yo angular-ts</code> to create the project.
+</p>
+<p>
+    The ng-ts.json file contains the necessary options used by the generator and gulp to create and build your app.
+    <pre class="language-json" prism source='{
+  "moduleName": "app",
+  "bowerJson":"./bower.json",
+  "index": true,
+  "src": {
+     "paths":{
+       "base": "client",
+       "app": "/app",
+       "components": "/components",
+       "config": "/config",
+       "constants": "/constants",
+       "directives": "/directives",
+       "filters": "/filters",
+       "routes": "/routes",
+       "run": "/run",
+       "services": "/services",
+       "img": "/img",
+       "fonts": "/fonts",
+       "lib": "/lib",
+       "typings":"typings/main.d.ts"
+     } ,
+    "patters": {
+      "sass": "./client/app/**/*.scss",
+      "ts": "./client/app/**/*.ts",
+      "img": "./client/img/**/*.{png,gif,jpg,jpeg}",
+      "fonts": "./client/fonts/**/*.{eot,svg,ttf,woff,woff2}",
+      "templates":"./client/app/**/*.template.html",
+      "lib":"./client/lib/**/*"
+    },
+    "templates": {
+      "options": {
+        "moduleName": "app.templates",
+        "prefix": "./views/"
+      }
+    },
+    "main": "client/app/app.main.ts",
+    "decorators": "client/app/app.decorators.ts",
+    "appTypings": "client/app/app.d.ts",
+    "index": "client/index.html"
+  },
+  "dist":{
+    "paths":{
+      "base": "dist",
+      "js": "/js",
+      "css": "/css",
+      "fonts": "/fonts",
+      "img": "/img",
+      "lib": "/lib"
+    },
+    "css":"app.min.css",
+    "js":"app.min.js",
+    "vendorJs":"vendor.min.js",
+    "vendorCss":"vendor.min.css",
+    "templates":"tpl.min.js"
+  },
+  "tests":{
+    "karma":"karma.conf.js",
+    "preprocessors": {
+      "tests/**/*.spec.ts": ["typescript"]
+    },
+    "paths":{
+      "base": "tests",
+      "components":"/components",
+      "services":"/services",
+      "directives":"/directives"
+    },
+    "patters":{
+      "tests":"./tests/**/*.spec.ts"
+    }
+  }
+}'></pre>
+</p>
+<p>If you are using a backend server that serves the application entry ex. laravel and blade you can tell
+    gulp to skip index.html by setting <code>"index": false</code>, then you add a new property <code>"proxy":"localhost:8000"</code>(ex. for laravel) to the root of the
+config right bellow <code>"index": false</code>, now the auto reload server
+will link to your running laravel backend.</p>
+<p>Every folder changed in the configuration files will change the location the files are created by the generator.</p>
+<div class="admonition warning">
+    <p class="admonition-title">Warning</p>
+    <p>Some folders need to be changed in multiple configuration options be careful if you change a folder to change the same folder in other
+    options</p>
+    <p>Ex. if you change the '<b>src.components</b>' folder you also need to change '<b>tests.paths.components</b>'.</p>
+</div>
+<h2 id="bower_dependencies">Bower Dependencies</h2>
+<p>Bower dependencies are automatically imported and concatenated to <code>vendor.min.js</code> and <code>vendor.min.css</code>.</p>
+<p>Angular-ts uses the project bower.json and the dependencies bower.json to determine which files to import and in what order, particularly
+    angular-ts uses the <code>main</code> option  and the <code>dependencies</code> option in bower.</p>
+<p>If the dependency does not list the necessary files in their main file you can use the <code>override</code> option on your project bower.json. An example
+of this is bootstrap it does not list the css and js in the main of the bower file we can still get the files by overriding the main of the dependency</p>
+<p>To override ex. <code>bootstrap</code> main just add this to your bower.json</p>
+<pre class="language-bash" prism source='
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/js/bootstrap.js"
+      ]
+    }
+  }'></pre>
+<p>Now <code>"dist/css/bootstrap.css"</code> and <code>"dist/js/bootstrap.js"</code> will be imported</p>
+<p>Another case is when you want to load a dependency before another ex. <code>jquery</code> before <code>angular</code></p>
+<p>To load <code>jquery</code> before <code>angular</code> add this to your bower.json</p>
+<pre class="language-bash" prism source='
+  "overrides": {
+    "angular":{
+      "dependencies":{
+        "jquery": "^2.2.3"
+      }
+    }
+  }'></pre>
+<p>This works with any package that depends on another package but the developer did not include it on the dependencies list</p>
+<h2 id="tests">Tests</h2>
+<p>Angular-ts <code>@Test</code> decorator uses <code>ng-describe</code> under the hood to for testing, to see all the options that are provided by <code>ng-describe</code>
+see <a href="https://github.com/kensho/ng-describe" target="_blank">ng-describe github repository</a> </p>
+<p>For running the test angular-ts uses <code>Karma</code> and <code>PhantomJS</code></p>

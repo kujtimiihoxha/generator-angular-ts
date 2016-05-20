@@ -1,0 +1,103 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Service Generator</h1>
+<p>The service generator is used to create angular services.</p>
+<p>To create a service execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:service name=baz [options]"></pre>
+<h2>Options</h2>
+<ul>
+    <li><a scroll-to-id="inject"><code>inject</code></a> : dependencies to inject in the config</li>
+    <li><a scroll-to-id="parent"><code>parent</code></a> : parent of component</li>
+</ul>
+<h2>Create a service</h2>
+<p>To create a service ex. baz service execute</p>
+<pre class="language-bash" prism source="yo angular-ts:service name=baz"></pre>
+<p>After the generator finishes one file will be created.</p>
+<ul>
+    <li><b>baz.service.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Services {
+    @Service('BazService')
+    class BazService{
+        constructor(){
+            console.log('Baz service');
+        }
+    }
+}
+"></pre>
+</ul>
+<p>The run file will be created in the run folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- services/
+|   |   |   |   |-- baz.service.ts
+"></pre>
+<p>Besides the service the generator automatically adds a test to the test folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- tests/
+|   |   |-- services/
+|   |   |   |-- baz.service.spec.ts
+"></pre>
+<ul>
+    <li><b>baz.service.spec.ts</b></li>
+    <pre class="language-typescript" prism source="module Tests.Services {
+  @App.Test(
+    {
+      modules: 'app',
+      inject: ['BazService'], // for making test calls
+    }
+  )
+  class BazServiceTest{
+    constructor(deps){
+      it('some test', function () {
+       //deps.BazService is the service
+      });
+    }
+  }
+}
+"></pre>
+</ul>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>If you don't want to create the test with the service just add <code>--noTest</code> flag after the options of the generator.</p>
+</div>
+<h2 id="inject">Inject</h2>
+<p>The inject option will tell the generator to inject dependencies.</p>
+<pre class="language-bash" prism source="yo angular-ts:service name=baz inject=$timeout"></pre>
+<p>Now <code>$timeout</code> will be injected in the service.</p>
+<pre class="language-typescript" prism source="module App.Services {
+    @Service('BazService')
+    @Inject('$timeout')
+    class BazService{
+        constructor(private timeout: any){
+            console.log('Baz service');
+        }
+    }
+}
+"></pre>
+<h2 id="parent">Parent</h2>
+<p>The parent option is used to tell the generator that this service will be placed in a sub-folder of the services folder .</p>
+<pre class="language-bash" prism source="yo angular-ts:service name=baz parent=foo-bar"></pre>
+<p>The generator will create the <code>baz</code> service under the <code>foo-bar</code> folder. </p>
+<pre class="language-bash" prism source="|-- your-app
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- services/
+|   |   |   |   |-- foo-bar/
+|   |   |   |   |   |-- baz.service.ts
+"></pre>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>You can use <code>--forceParent</code> to create the parent directory if it does not exist</p>
+</div>
+<p>Also the test will be created under the <code>foo-bar</code> component test.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- tests/
+|   |   |-- services/
+|   |   |   |-- foo-bar/
+|   |   |   |   |-- baz.service.spec.ts
+"></pre>
+<p>Parent could be also a nested directories, for example you can add a service to <code>parent=path/where/you/want/your/service</code>.</p>

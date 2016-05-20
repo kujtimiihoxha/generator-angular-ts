@@ -1,0 +1,139 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Usage</h1>
+<h2>Create your application</h2>
+<ul>
+    <li><a scroll-to-id="folder-structure">Folder Structure</a></li>
+    <li><a scroll-to-id="index">Index</a></li>
+    <li><a scroll-to-id="build">Build</a></li>
+    <li><a scroll-to-id="watch">Watch</a></li>
+</ul>
+<p>
+    To create your application first create the folder where your aplication will be placed, usualy the name of the folder
+    is the same as the application name.
+</p>
+<pre class="language-bash" prism source="mkdir my-app && cd my-app"></pre>
+<p>Now run the generator.</p>
+<pre class="language-bash" prism source="yo angular-ts"></pre>
+<p>If you don't want the include the  sample application(this documentation) run the generator with <code>--clean</code> flag.</p>
+<pre class="language-bash" prism source="yo angular-ts --clean"></pre>
+<p>Follow the on screen prompts and your app will be created.</p>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>Do not use the default module name if you need a specific one because this will be harder to change after the application is created.</p>
+    <p>If you use <code>--clean</code> flag after the build you will not get app.min.css and vendor.min.css since the clean app does not have
+        any styling, after you add your scss or any dependency that has css files this files will be created.</p>
+</div>
+<h2 id="folder-structure">Folder structure</h2>
+<pre class="language-bash" prism
+     source="|--my-app/                                       --> your application folder
+|   |-- client/
+|   |   |-- app/                                 --> source code
+|   |   |   |-- components/
+|   |   |   |-- config/
+|   |   |   |   |-- core.config.ts               --> core configurations
+|   |   |   |-- constants/
+|   |   |   |-- directives/
+|   |   |   |-- filters/
+|   |   |   |-- routes/
+|   |   |   |   |-- home/
+|   |   |   |   |   |-- home.route.ts
+|   |   |   |   |   |-- home.template.html
+|   |   |   |-- run/
+|   |   |   |-- services/
+|   |   |   |-- app.d.ts                         --> helper typings
+|   |   |   |-- app.decorators.ts                --> decorators (do not remove)
+|   |   |   |-- app.main.ts                      --> module declaration
+|   |   |-- fonts/
+|   |   |-- img/
+|   |   |-- lib/
+|   |   |-- index.html
+|   |-- gulp/
+|   |   |-- tasks/
+|   |   |   |-- bower.task.js
+|   |   |   |-- fonts.task.js
+|   |   |   |-- img.task.js
+|   |   |   |-- index.task.js
+|   |   |   |-- lib.task.js
+|   |   |   |-- scss.task.js
+|   |   |   |-- test.task.js
+|   |   |   |-- tpl.task.js
+|   |   |   |-- ts.task.js
+|   |-- tests/
+|   |-- .babelrc
+|   |-- .gitignore
+|   |-- bower.json
+|   |-- gulpfile.babel.js
+|   |-- karma.config.js
+|   |-- ng-ts.json
+|   |-- package.json
+|   |-- README.md
+|   |-- typings.json
+"></pre>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>Every dependency that is not a bower project can be put in the <code>client/lib</code> folder and it will be copied in the build.</p>
+</div>
+<h2 id="index">Index</h2>
+<p>If you are not using any backend server to serve the entry for your app <code>angular-ts</code> is prefigured to use the <code>index.html</code>
+in the <code>client/</code> folder.
+</p>
+<pre class="language-html" prism source='<html lang="en" ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <title>App</title>
+  <!--Bower css-->
+  <link rel="stylesheet" href="css/vendor.min.css">
+  <!---->
+  <!--App css-->
+  <link rel="stylesheet" href="css/app.min.css">
+  <!---->
+  <link rel="icon" type="image/png" href="img/ng-ts.png">
+</head>
+<body>
+<!--Entry view-->
+<div ui-view></div>
+<!---->
+<!--Bower js-->
+<script src="js/vendor.min.js"></script>
+<!---->
+<!--Templates-->
+<script src="js/tpl.min.js"></script>
+<!---->
+<!--App js-->
+<script src="js/app.min.js"></script>
+<!---->
+</body>
+</html>
+'></pre>
+<p>This index file will be created if you use the <code>--clean</code> flag</p>
+<h2 id="build">Build</h2>
+<p>To build the project execute</p>
+<pre class="language-bash" prism source="gulp"></pre>
+<p>After the build is complete the <code>dist</code> folder will be created</p>
+<pre class="language-bash" prism source="|--dist/
+|   |-- css/
+|   |   |-- app.min.css          --> your scss compiled
+|   |   |-- app.min.css.map
+|   |   |-- vendor.min.css       --> bower dependencies css
+|   |   |-- vendor.min.css.map
+|   |-- fonts/                   --> fonts from client/fonts
+|   |-- img/                     --> images from client/img
+|   |-- js/
+|   |   |-- app.min.js           --> typescript compiled
+|   |   |-- app.min.js.map
+|   |   |-- tpl.min.js           --> templates cashed
+|   |   |-- tpl.min.js.map
+|   |   |-- vendor.min.js        --> bower dependencies js
+|   |   |-- vendor.min.js.map
+|   |-- lib/                     --> everything from client/lib
+|   |-- index.html               --> if 'index'=true in ng-config.json
+"></pre>
+<h2 id="watch">Watch</h2>
+<p>If you want the changes made in the code to appear immediately you can use <code>watch</code>.</p>
+<pre class="language-bash" prism source="gulp && gulp watch"></pre>
+<p>This will also run tests every time you change something to disable tests run </p>
+<pre class="language-bash" prism source="gulp && gulp watch --no-tests"></pre>

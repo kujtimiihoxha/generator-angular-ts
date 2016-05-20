@@ -1,0 +1,46 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>@Route()</h1>
+<p>The <code>@Route</code> decorator is used to register a route, you must supply a state name to the decorator and the state options.</p>
+<pre class="language-typescript" prism source="@Route('name',{
+
+        template?: string | {(): string};
+
+        templateUrl?: string | {(params: IStateParamsService): string};
+
+        templateProvider?: Function | Array<string|Function>;
+
+        controller?: Function|string|Array<string|Function>;
+
+        controllerAs?: string;
+
+        controllerProvider?: Function|Array<string|Function>;
+
+        parent?: string | IState;
+
+        resolve?: { [name:string]: any };
+
+        url?: string | IUrlMatcher;
+
+        params?: any;
+
+        views?: { [name:string]: IState };
+
+        abstract?: boolean;
+
+        onEnter?: Function|Array<string|Function>;
+
+        onExit?: Function|Array<string|Function>;
+
+        data?: any;
+
+        reloadOnSearch?: boolean;
+
+        cache?: boolean;
+})
+"></pre>
+<p>To create a route use <a ui-sref="generators.route"><code>yo angular-ts:route</code></a>. To learn more about <code>ui-router</code> see
+    <a href="https://angular-ui.github.io/ui-router/site/#/api/ui.router" target="_blank">ui-router documentation </a></p>

@@ -1,11 +1,12 @@
 {
-  "name": "angular-typescript",
-  "description": "Angular Typecript Starter",
+  "name": "<%= appName %>",
+  "description": "<%= appDescription %>",
+  "version": "<%= appVersion %>",
   "main": "",
   "authors": [
-    "Kujtim Hoxha"
+    "<%= appAuthor %>"
   ],
-  "license": "MIT",
+  "license": "<%= appLicense %>",
   "keywords": [
     "angular",
     "typescript",

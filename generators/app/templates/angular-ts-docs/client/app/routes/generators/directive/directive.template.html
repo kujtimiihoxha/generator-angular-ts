@@ -1,0 +1,158 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Directive Generator</h1>
+<p>The directive generator is used to create directives.
+    Angular-ts directives are by default created to be used only as attributes because we use <code><a ui-sref="generators.component">components</a></code>
+    for all directives that are used as elements and have templates.</p>
+<p>To create a directive execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:directive selector=baz-foo [options]  [flags]"></pre>
+<h2>Options</h2>
+<ul>
+    <li><a scroll-to-id="inject"><code>inject</code></a> : dependencies to inject in the controller</li>
+</ul>
+<h2>Flags</h2>
+<ul>
+    <li><a scroll-to-id="link"><code>--link</code></a> : implement link function</li>
+    <li><a scroll-to-id="compile"><code>--compile</code></a> : implement compile function</li>
+</ul>
+<h2 id="simple-component">Create a simple Directive</h2>
+<p>To create a directive ex. <code>baz-foo</code> directive run.</p>
+
+<pre class="language-bash" prism source="yo angular-ts:directive selector=baz-foo"></pre>
+<p>After the generator finishes one file will be created.</p>
+<ul>
+    <li><b>baz-foo.directive.ts</b>: controller and directive registration</li>
+     <pre class="language-typescript" prism source="module App.Directives{
+    @Directive('baz-foo',{
+        restrict: 'A'
+    })
+    class BazFooDirective{
+        value='baz-foo';
+        constructor(){
+            console.log('baz-foo directives');
+        }
+    }
+}
+"></pre>
+</ul>
+<p>The directive will be created in the directives folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- directives/
+|   |   |   |   |-- baz-foo.directive.ts
+"></pre>
+<p>Besides the directive the generator automatically adds a test to the test folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- tests/
+|   |   |-- directives/
+|   |   |   |-- baz-foo.directive.spec.ts
+"></pre>
+<ul>
+    <li><b>baz-foo.directive.spec.ts</b></li>
+    <pre class="language-typescript" prism source="module Tests.Directives {
+  @App.Test(
+    {
+      modules: 'app',
+      element: '<div baz-foo></div>',
+      parentScope: {
+        //some parent scope values
+      },
+    }
+  )
+  class BazFooDirectiveTest{
+    constructor(deps){
+      it('some test', function () {
+       //deps.element.isolateScope().vm is the directive scope
+      });
+    }
+  }
+}
+"></pre>
+</ul>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>If you don't want to create the test with the directive just add <code>--noTest</code> flag after the options of the generator.</p>
+</div>
+<p>Now to use the new directive on any html element just add <code>baz-foo</code> as an attribute.</p>
+<h2 id="inject">Inject</h2>
+<p>The inject option will tell the generator to inject dependencies.</p>
+<pre class="language-bash" prism source="yo angular-ts:directive selector=baz-foo inject=$timeout"></pre>
+<p>Now <code>$timeout</code> service will be injected in the directives controller.</p>
+<ul>
+    <li><b>baz-foo.directive.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Directives{
+    @Directive('baz-foo',{
+        restrict: 'A'
+    })
+    @Inject('$timeout')
+    class BazFooDirective{
+        value='baz-foo';
+        constructor(private timeout: any){
+            console.log('baz-foo directives');
+        }
+    }
+}
+"></pre>
+</ul>
+<h2 id="link">--link</h2>
+<p>If <code>--link</code> flag is used the directive generator will implement the link function in the directive.</p>
+<pre class="language-bash" prism source="yo angular-ts:directive selector=baz-foo --link"></pre>
+
+<ul>
+    <li><b>baz-foo.directive.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Directives{
+    @Directive('baz-foo',{
+        restrict: 'A'
+    })
+    class BazFooDirective{
+        value='baz-foo';
+        constructor(){
+            console.log('baz-foo directives');
+        }
+
+        static link(scope:any, element:any, attrs:any) {
+            console.log('Link')
+            element.addClass('my-class')
+        }
+
+    }
+}
+"></pre>
+</ul>
+<p>There is no reason to register the link function it will be automatically registered by the decorator.</p>
+<h2 id="compile">--compile</h2>
+<p>If <code>--compile</code> flag is used the directive generator will implement the compile function in the directive.</p>
+<pre class="language-bash" prism source="yo angular-ts:directive selector=baz-foo --compile"></pre>
+<ul>
+    <li><b>baz-foo.directive.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Directives{
+    @Directive('baz-foo',{
+        restrict: 'A'
+    })
+    class BazFooDirective{
+        value='baz-foo';
+        constructor(){
+            console.log('baz-foo directives');
+        }
+
+        static compile(tElement:any, tAttrs:any, transclude:any) {
+            //Before compilation
+            console.log('Before Compile')
+            return {
+                pre: function preLink(scope:any, iElement:any, iAttrs:any, controller:any) {
+                    //pre link implementation.
+                },
+                post: function postLink(scope:any, iElement:any, iAttrs:any, controller:any) {
+                    //post link implementation.
+                }
+            }
+        }
+    }
+}
+"></pre>
+</ul>
+<p>You can also use <code>--link</code> and <code>--compile</code> together and both functions will be created.</p>

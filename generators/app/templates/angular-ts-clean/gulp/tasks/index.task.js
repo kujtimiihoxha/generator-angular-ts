@@ -35,7 +35,10 @@ gulp.task('index', function() {
         .pipe(plumber({
             errorHandler: onError
         }))
-        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(htmlmin({
+          collapseWhitespace: true,
+          removeComments:true
+        }))
         .pipe(gulp.dest(config.dist.paths.base))
         .pipe(browserSync.reload({stream: true}));
 });

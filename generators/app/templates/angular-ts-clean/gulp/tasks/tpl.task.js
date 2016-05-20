@@ -44,7 +44,10 @@ gulp.task('tpl', function() {
         .pipe(plumber({
             errorHandler: onError
         }))
-        .pipe(htmlmin({collapseWhitespace: true}))
+        .pipe(htmlmin({
+          collapseWhitespace: true,
+          removeComments:true
+        }))
         .pipe(ngHtml2Js(config.src.templates.options))
         .pipe(uglify())
         .pipe(concat(config.dist.templates))

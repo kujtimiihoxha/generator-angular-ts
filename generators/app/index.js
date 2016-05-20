@@ -26,7 +26,7 @@ module.exports = yeoman.Base.extend({
       type: 'input',
       name: 'appName',
       message: 'Your project name ?',
-      default: this.appname
+      default: _.kebabCase(this.appname)
     },{
       type: 'input',
       name: 'version',
@@ -44,8 +44,8 @@ module.exports = yeoman.Base.extend({
       default: ""
     },{
       type: 'input',
-      name: 'licence',
-      message: 'Project licence ?',
+      name: 'license',
+      message: 'Project license ?',
       default: "MIT"
     },{
       type: 'input',
@@ -69,7 +69,7 @@ module.exports = yeoman.Base.extend({
            appVersion: this.props.version,
            appDescription:this.props.description,
            appAuthor:this.props.author,
-           appLicence:this.props.licence,
+           appLicense:this.props.license,
            appModule:this.props.appModule,
            appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
          }
@@ -81,7 +81,69 @@ module.exports = yeoman.Base.extend({
            appVersion: this.props.version,
            appDescription:this.props.description,
            appAuthor:this.props.author,
-           appLicence:this.props.licence,
+           appLicense:this.props.license,
+           appModule:this.props.appModule,
+           appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
+         }
+       );
+     } else {
+       this.fs.copyTpl(
+         this.templatePath('angular-ts-docs/**/*'),
+         this.destinationRoot(),{
+           appName:this.props.appName,
+           appVersion: this.props.version,
+           appDescription:this.props.description,
+           appAuthor:this.props.author,
+           appLicense:this.props.license,
+           appModule:this.props.appModule,
+           appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
+         }
+       );
+       this.fs.copyTpl(
+         this.templatePath('angular-ts-docs/**/.*'),
+         this.destinationRoot(),{
+           appName:this.props.appName,
+           appVersion: this.props.version,
+           appDescription:this.props.description,
+           appAuthor:this.props.author,
+           appLicense:this.props.license,
+           appModule:this.props.appModule,
+           appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
+         }
+       );
+
+       this.fs.copy(
+         this.templatePath('fonts'),
+         this.destinationPath('client/fonts'),{
+           appName:this.props.appName,
+           appVersion: this.props.version,
+           appDescription:this.props.description,
+           appAuthor:this.props.author,
+           appLicense:this.props.license,
+           appModule:this.props.appModule,
+           appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
+         }
+       );
+       this.fs.copy(
+         this.templatePath('img'),
+         this.destinationPath('client/img'),{
+           appName:this.props.appName,
+           appVersion: this.props.version,
+           appDescription:this.props.description,
+           appAuthor:this.props.author,
+           appLicense:this.props.license,
+           appModule:this.props.appModule,
+           appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
+         }
+       );
+       this.fs.copy(
+         this.templatePath('lib'),
+         this.destinationPath('client/lib'),{
+           appName:this.props.appName,
+           appVersion: this.props.version,
+           appDescription:this.props.description,
+           appAuthor:this.props.author,
+           appLicense:this.props.license,
            appModule:this.props.appModule,
            appModuleCamel: _.upperFirst(_.camelCase(this.props.appModule))
          }

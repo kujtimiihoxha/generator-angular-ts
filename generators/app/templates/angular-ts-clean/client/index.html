@@ -1,15 +1,33 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
 <!doctype html>
 <html lang="en" ng-app="<%= appModule %>">
 <head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="css/vendor.min.css">
-    <link rel="stylesheet" href="css/app.min.css">
-    <link rel="icon" type="image/png" href="img/ng-ts.png">
+  <meta charset="UTF-8">
+  <title><%= appName %></title>
+  <!--Bower css-->
+  <link rel="stylesheet" href="css/vendor.min.css">
+  <!---->
+  <!--App css-->
+  <link rel="stylesheet" href="css/app.min.css">
+  <!---->
+  <link rel="icon" type="image/png" href="img/ng-ts.png">
 </head>
 <body>
+<!--Entry view-->
 <div ui-view></div>
+<!---->
+<!--Bower js-->
 <script src="js/vendor.min.js"></script>
+<!---->
+<!--Templates-->
 <script src="js/tpl.min.js"></script>
+<!---->
+<!--App js-->
 <script src="js/app.min.js"></script>
+<!---->
 </body>
 </html>

@@ -1,0 +1,72 @@
+{
+  "moduleName": "<%= appModule %>",
+  "bowerJson":"./bower.json",
+  "index": true,
+  "src": {
+     "paths":{
+       "base": "client",
+       "app": "/app",
+       "components": "/components",
+       "config": "/config",
+       "constants": "/constants",
+       "directives": "/directives",
+       "filters": "/filters",
+       "routes": "/routes",
+       "run": "/run",
+       "services": "/services",
+       "img": "/img",
+       "fonts": "/fonts",
+       "lib": "/lib",
+       "typings":"typings/index.d.ts"
+     } ,
+    "patters": {
+      "sass": "./client/app/**/*.scss",
+      "ts": "./client/app/**/*.ts",
+      "img": "./client/img/**/*.{png,gif,jpg,jpeg}",
+      "fonts": "./client/fonts/**/*.{eot,svg,ttf,woff,woff2}",
+      "templates":"./client/app/**/*.template.html",
+      "lib":"./client/lib/**/*"
+    },
+    "templates": {
+      "options": {
+        "moduleName": "<%= appModule %>.templates",
+        "prefix": "./views/"
+      }
+    },
+    "main": "client/app/app.main.ts",
+    "decorators": "client/app/app.decorators.ts",
+    "appTypings": "client/app/app.d.ts",
+    "index": "client/index.html"
+  },
+  "dist":{
+    "paths":{
+      "base": "dist",
+      "js": "/js",
+      "css": "/css",
+      "fonts": "/fonts",
+      "img": "/img",
+      "lib": "/lib"
+    },
+    "css":"app.min.css",
+    "js":"app.min.js",
+    "vendorJs":"vendor.min.js",
+    "vendorCss":"vendor.min.css",
+    "templates":"tpl.min.js"
+  },
+  "tests":{
+    "karma":"karma.conf.js",
+    "preprocessors": {
+      "tests/**/*.spec.ts": ["typescript"]
+    },
+    "paths":{
+      "base": "tests",
+      "components":"/components",
+      "services":"/services",
+      "directives":"/directives",
+      "filters":"/filters"
+    },
+    "patters":{
+      "tests":"./tests/**/*.spec.ts"
+    }
+  }
+}

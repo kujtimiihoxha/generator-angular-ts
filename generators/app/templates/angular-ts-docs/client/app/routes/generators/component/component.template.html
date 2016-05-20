@@ -1,0 +1,183 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Component Generator</h1>
+<p>The component generator is used to create angular 1.5 components.
+    Angular-ts component generator has a number of options that will make it easy to add new components to your application.</p>
+<p>To create a component execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:component selector=foo-bar [options] [flags]"></pre>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>The selector is the name of the html <code>tag</code> the component will have,
+        it can be <code>camelCase</code> or <code>kebab-case</code>. the generator will treat them the same</p>
+    <p>Do not add the <b>Component</b> ending(postfix) to the selector it will be added automatically by the generator</p>
+</div>
+<h2>Options</h2>
+<ul>
+    <li><code>selector</code> : html tag of the component.  <i class="required">[REQUIRED]</i></li>
+    <li><a scroll-to-id="inject"><code>inject</code></a> : dependencies to inject in the controller.</li>
+    <li><a scroll-to-id="bind"><code>bind</code></a> : binding values (by default it creates the bindings as input only).</li>
+    <li><a scroll-to-id="parent"><code>parent</code></a> : parent of component.</li>
+</ul>
+<h2>Flags</h2>
+<ul>
+    <li><code>--noTest</code> : don't generate test automatically.</li>
+    <li><code>--forceParent</code> : force the parent directory</li>
+</ul>
+<h2 id="simple-component">Create a simple Component</h2>
+<p>To create a component ex. <code>foo-bar</code> component run.</p>
+
+<pre class="language-bash" prism source="yo angular-ts:component selector=foo-bar"></pre>
+<p>After the generator finishes three files will be created.</p>
+<ul>
+    <li><b>foo-bar.component.ts</b>: controller and component registration</li>
+    <pre class="language-typescript" prism source="module App.Components {
+    @Component('foo-bar',{
+        templateUrl:'./views/components/foo-bar/foo-bar.template.html'
+    })
+    class FooBarComponent{
+        constructor(){
+            console.log('foo-bar component');
+        }
+    }
+}
+"
+    ></pre>
+
+    <li><b>foo-bar.scss</b>: component style</li>
+    <pre class="language-scss" prism source="foo-bar {
+
+}
+"></pre>
+    <li><b>foo-bar.template.html</b>: component view</li>
+   <pre class="language-markup" prism source="<h1>foo-bar component</h1>"></pre>
+</ul>
+<p>The component will be created in the components folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- components/
+|   |   |   |   |-- foo-bar/
+|   |   |   |   |   |-- foo-bar.component.ts
+|   |   |   |   |   |-- foo-bar.scss
+|   |   |   |   |   |-- foo-bar.template.html
+"></pre>
+<p>Besides the component the generator automatically adds a test to the test folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- tests/
+|   |   |-- components/
+|   |   |   |-- foo-bar/
+|   |   |   |   |-- foo-bar.component.spec.ts
+"></pre>
+<ul>
+    <li><b>foo-bar.component.spec.ts</b></li>
+    <pre class="language-typescript" prism source="module Tests.Components {
+  @App.Test(
+    {
+      modules: 'app',
+      element: '<foo-bar></foo-bar>',
+      parentScope: {
+        //some parent scope values
+      },
+    }
+  )
+  class FooBarComponentTest{
+    constructor(deps){
+      it('some test', function () {
+       //deps.element.isolateScope().vm is the component scope
+      });
+    }
+  }
+}
+"></pre>
+</ul>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>If you don't want to create the test with the component just add <code>--noTest</code> flag after the options of the generator.</p>
+</div>
+<p>Now to use the new component on any view just add <code>&lt;foo-bar>&lt;/foo-bar></code>.</p>
+<h2 id="inject">Inject</h2>
+<p>The inject option will tell the generator to inject dependencies.</p>
+<pre class="language-bash" prism source="yo angular-ts:component selector=foo-bar inject=$timeout"></pre>
+<p>Now <code>$timeout</code> service will be injected in the component controller.</p>
+<ul>
+    <li><b>foo-bar.component.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Components {
+    @Component('foo-bar',{
+        templateUrl:'./views/components/foo-bar/foo-bar.template.html'
+    })
+    @Inject('$timeout')
+    class FooBarComponent{
+        constructor(private timeout: any){
+            console.log('foo-bar component');
+        }
+    }
+}
+"></pre>
+</ul>
+<p>All the other files and the folder structure will be the same as the <a scroll-to-id="simple-component">
+    simple component</a> the only file that changes is the typescript file.</p>
+<h2 id="bind">Bind</h2>
+<p>The bind option is used to add binding values to the component, to make it simpler the generator adds the bindings as input by default
+but you can change the bindings easily after the component is created.</p>
+<pre class="language-bash" prism source="yo angular-ts:component selector=foo-bar bind=my-bind"></pre>
+<ul>
+    <li><b>foo-bar.component.ts</b></li>
+<pre class="language-typescript" prism source="module App.Components {
+    @Component('foo-bar',{
+        templateUrl:'./views/components/foo-bar/foo-bar.template.html',
+        bindings:{
+			myBind:'<'//object input
+        }
+    })
+    class FooBarComponent{
+		myBind: any;
+
+        constructor(){
+            console.log('foo-bar component');
+        }
+    }
+}
+"></pre>
+</ul>
+<p>Now you can pass values to your component using <code>my-bind</code> attribute <code>&lt;foo-bar my-bind="vm.someValue">&lt;/foo-bar></code></p>
+<h2 id="parent">Parent</h2>
+<p>The parent option is used to tell the generator that this component will be a child of some other component, this is usefull
+to maintain a better folder structure.</p>
+<pre class="language-bash" prism source="yo angular-ts:component selector=baz parent=foo-bar"></pre>
+<p>The generator will create the <code>baz</code> component under the <code>foo-bar</code> component. </p>
+<pre class="language-bash" prism source="|-- your-app
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- components/
+|   |   |   |   |-- foo-bar/
+|   |   |   |   |   |-- baz/
+|   |   |   |   |   |   |-- baz.component.ts
+|   |   |   |   |   |   |-- baz.scss
+|   |   |   |   |   |   |-- baz.template.html
+|   |   |   |   |   |-- foo-bar.component.ts
+|   |   |   |   |   |-- foo-bar.scss
+|   |   |   |   |   |-- foo-bar.template.html
+"></pre>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>You can use <code>--forceParent</code> to create the parent directory if it does not exist</p>
+</div>
+<p>Also the test will be created under the <code>foo-bar</code> component test.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- tests/
+|   |   |-- components/
+|   |   |   |-- foo-bar/
+|   |   |   |   |-- baz/
+|   |   |   |   |   |-- baz.component.spec.ts
+|   |   |   |   |-- foo-bar.component.spec.ts
+"></pre>
+<p>Parent could be also a sub component, for example you can add a child to the <code>baz</code> component by adding <code>parent=foo-bar/baz</code>
+as an option in the generator.
+</p>
+<div class="admonition warning">
+    <p class="admonition-title">Warning</p>
+    <p>The parent option must match the folder names of the parents.</p>
+</div>

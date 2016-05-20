@@ -1,0 +1,145 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h1>Route Generator</h1>
+<p>The rote generator is used to create angular-ui routes.
+    Angular-ts route generator has a number of options that will make it easy to add new route to your application.</p>
+<p>To create a route execute the following.</p>
+<pre class="language-bash" prism source="yo angular-ts:route name=baz url=/bar [options] [flags]"></pre>
+
+<h2>Options</h2>
+<ul>
+    <li><a scroll-to-id="inject"><code>inject</code></a> : dependencies to inject in the controller</li>
+    <li><a scroll-to-id="component"><code>component</code></a> : makes the template of the route a component</li>
+    <li><a scroll-to-id="parent"><code>parent</code></a> : parent of component</li>
+</ul>
+<h2>Flags</h2>
+<ul>
+    <li><a scroll-to-id="abstract"><code>--abstract</code></a> : implement link function</li>
+</ul>
+<h2 id="simple-component">Create a simple Route</h2>
+<pre class="language-bash" prism source="yo angular-ts:route  name=baz url=/bar "></pre>
+<p>After the generator finishes two files will be created.</p>
+<ul>
+    <li><b>baz.route.ts</b>: controller and route registration</li>
+    <pre class="language-typescript" prism source="module App.Routes {
+    @Route('baz',{
+        url:'/bar',
+        templateUrl:'./views/routes/baz/baz.template.html'
+    })
+    class BazRoute{
+        constructor(){
+        }
+    }
+}
+"
+    ></pre>
+
+    <li><b>baz.template.html</b>: route view</li>
+    <pre class="language-html" prism source="<h1>Welcome to 'baz' route  under the '/bar'  url</h1>
+<div ui-view></div>
+"></pre>
+</ul>
+<p>The route will be created in the routes folder.</p>
+<pre class="language-bash" prism source="|-- your-app/
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- routes/
+|   |   |   |   |-- baz/
+|   |   |   |   |   |-- baz.route.ts
+|   |   |   |   |   |-- baz.template.html
+"></pre>
+<p>Visit the route by going to <code>localhost:3000/bar</code>.</p>
+<h2 id="inject">Inject</h2>
+<p>The inject option will tell the generator to inject dependencies.</p>
+<pre class="language-bash" prism source="yo angular-ts:route  name=baz url=/bar inject=$timeout"></pre>
+<p>Now <code>$timeout</code> service will be injected in the component controller.</p>
+<ul>
+    <li><b>baz.route.ts</b></li>
+    <pre class="language-typescript" prism source="module App.Routes {
+    @Route('baz',{
+        url:'/bar',
+        templateUrl:'./views/routes/baz/baz.template.html'
+    })
+
+    @Inject('$timeout')
+    class BazRoute{
+        constructor(private timeout: any){
+        }
+    }
+}
+"></pre>
+</ul>
+<h2 id="component">Component</h2>
+<p>If you want your route to be a component not a specific view you can use the component option.</p>
+<pre class="language-bash" prism source="yo angular-ts:route  name=baz url=/bar component=foo"></pre>
+<ul>
+    <li><b>baz.route.ts</b></li>
+<pre class="language-typescript" prism source="module App.Routes {
+    @Route('baz',{
+        url:'/bar',
+        template:'<foo></foo>'
+    })
+    class BazRoute{
+        constructor(){
+        }
+    }
+}
+"></pre>
+</ul>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>If you use the component option the template will not be created.</p>
+</div>
+<h2 id="parent">Parent</h2>
+<p>The parent option is used to tell the generator that this route will be a child of some other route.</p>
+<pre class="language-bash" prism source="yo angular-ts:route  name=baz url=/bar parent=foo"></pre>
+<p>The generator will create the <code>baz</code> route under the <code>foo</code> route. </p>
+<pre class="language-bash" prism source="|-- your-app
+|   |-- client/
+|   |   |-- app/
+|   |   |   |-- routes/
+|   |   |   |   |-- foo/
+|   |   |   |   |   |-- baz/
+|   |   |   |   |   |   |-- baz.route.ts
+|   |   |   |   |   |   |-- baz.template.html
+|   |   |   |   |   |-- foo.route.ts
+|   |   |   |   |   |-- foo.template.html
+"></pre>
+<ul>
+    <li><b>baz.route.ts</b></li>
+<pre class="language-typescript" prism source="module App.Routes.Foo {
+    @Route('foo.baz',{
+        url:'/bar',
+        templateUrl:'./views/routes/foo/baz/baz.template.html'
+    })
+    class BazRoute{
+        constructor(){
+        }
+    }
+}
+"></pre>
+</ul>
+<h2 id="abstract">--abstract</h2>
+<p>If the abstract flag is used the route will be created as abstract route</p>
+<pre class="language-bash" prism source="yo angular-ts:route  name=baz  --abstract"></pre>
+<ul>
+    <li><b>baz.route.ts</b></li>
+<pre class="language-typescript" prism source="module App.Routes {
+    @Route('baz',{
+        abstract: true,
+        templateUrl:'./views/routes/baz/baz.template.html'
+    })
+    class BazRoute{
+        constructor(){
+        }
+    }
+}
+"></pre>
+</ul>
+<div class="admonition note">
+    <p class="admonition-title">Note</p>
+    <p>If the route is abstract the <code>url</code> option is not mandatory.</p>
+</div>

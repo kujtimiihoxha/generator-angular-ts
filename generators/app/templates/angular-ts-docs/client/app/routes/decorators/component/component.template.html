@@ -1,0 +1,27 @@
+<!--
+  @author    Kujtim Hoxha {@link http://kujtimhoxha.com}
+  @copyright Copyright (c) 2016, Kujtim Hoxha
+  @license   MIT
+-->
+<h2>@Component()</h2>
+<p>
+    The <code>@Component</code> decorator is used to register an angular component, by default the class under the decorator
+    will be registered as the controller of the component and controllerAs will be 'vm'.</p>
+<pre class="language-typescript" prism source="@Component('yor-selector',{
+        controller?: string | Function | (string | Function)[];
+
+        controllerAs?: string;
+
+        template?: string | Function | (string | Function)[];
+
+        templateUrl?: string | Function | (string | Function)[];
+
+        bindings?: {[binding: string]: string};
+
+        transclude?: boolean | string | {[slot: string]: string};
+
+        require?: string | string[] | {[controller: string]: string};
+    })"></pre>
+ <p>  To create a component use <a ui-sref="generators.component"><code>yo angular-ts:component</code></a> generator. For more details on components
+    go to the  <a href="https://docs.angularjs.org/guide/component" target="_blank">angularjs components documentation</a>
+</p>
