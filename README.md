@@ -3,11 +3,13 @@
 ### See full documentation [Angular-Ts](http://angular-ts.kujtimhoxha.com)
 
 ## Installation
-
-First, install [Yeoman](http://yeoman.io) and generator-angular-ts using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
+Dependencies
+```bash
+npm install -g yo gulp bower typings
+```
+Then install generator-angular-ts using [npm](https://www.npmjs.com/) (we assume you have pre-installed [node.js](https://nodejs.org/)).
 
 ```bash
-npm install -g yo
 npm install -g generator-angular-ts
 ```
 
