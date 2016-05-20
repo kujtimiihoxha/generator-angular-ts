@@ -1,4 +1,4 @@
-# generator-angular-ts [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url] [![Dependency Status][daviddm-image]][daviddm-url]
+# generator-angular-ts [![NPM version][npm-image]][npm-url] [![Dependency Status][daviddm-image]][daviddm-url]
 > Yeoman Generator for Angular 1.5 and Typescript
 
 ### Docs
@@ -35,7 +35,5 @@ MIT © [Kujtim Hoxha](kujtimhoxha.com)
 
 [npm-image]: https://badge.fury.io/js/generator-angular-ts.svg
 [npm-url]: https://npmjs.org/package/generator-angular-ts
-[travis-image]: https://travis-ci.org/kujtimiihoxha/generator-angular-ts.svg?branch=master
-[travis-url]: https://travis-ci.org/kujtimiihoxha/generator-angular-ts
 [daviddm-image]: https://david-dm.org/kujtimiihoxha/generator-angular-ts.svg?theme=shields.io
 [daviddm-url]: https://david-dm.org/kujtimiihoxha/generator-angular-ts
